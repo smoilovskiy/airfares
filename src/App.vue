@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
-import DataService from './service/TempData.ts'
+import DataService from './service/TempData'
 
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
@@ -15,56 +15,59 @@ const dataService = new DataService()
 //let response: any = []
 
 onMounted(async () => {
-  // const instance = axios.create({
-  //   baseURL: 'https://www.ryanair.com/api'
-  // })
-  // const res: any = await instance
-  //   .get('/views/locate/3/airports/en/active')
+  const instance = axios.create({
+    baseURL: 'https://www.ryanair.com/api'
+  })
+  const res: any = await instance
+    .get('/views/locate/3/airports/en/active')
+    .then((response) => (airports = response.data))
+    .then(() => console.log('Airports:', airports))
+
+  // dataService
+  //   .getActiveAirports()
   //   .then((data) => (airports.value = data))
   //   .then(() => console.log('Airports:', airports))
-  //console.log('RES>>>>>>', res.data)
-  //console.log('RES>>>>>>', JSON.stringify(res.data))
-
-  dataService
-    .getActiveAirports()
-    .then((data) => (airports.value = data))
-    .then(() => console.log('Airports:', airports))
 })
 
-const airports = ref()
+let airports = ref()
 
 const text = ref()
 //const value = ref(null);
 
-const selectedCountry = ref()
+const selectedAirport = ref()
 
-const countries = ref([
-  { name: 'Australia', code: 'AU' },
-  { name: 'Brazil', code: 'BR' },
-  { name: 'China', code: 'CN' },
-  { name: 'Egypt', code: 'EG' },
-  { name: 'France', code: 'FR' },
-  { name: 'Germany', code: 'DE' },
-  { name: 'India', code: 'IN' },
-  { name: 'Japan', code: 'JP' },
-  { name: 'Spain', code: 'ES' },
-  { name: 'United States', code: 'US' }
-])
+// const allAirports = ref([
+//   { name: 'Australia', code: 'AU' },
+//   { name: 'Brazil', code: 'BR' },
+//   { name: 'China', code: 'CN' },
+//   { name: 'Egypt', code: 'EG' },
+//   { name: 'France', code: 'FR' },
+//   { name: 'Germany', code: 'DE' },
+//   { name: 'India', code: 'IN' },
+//   { name: 'Japan', code: 'JP' },
+//   { name: 'Spain', code: 'ES' },
+//   { name: 'United States', code: 'US' }
+// ])
+
+const allAirports = airports
+//console.log('allAirports', allAirports)
 </script>
 
 <template>
-  <div class="card flex justify-content-center ml-6">
-    <FloatLabel>
+  <div class="container">
+    <!-- <FloatLabel>
       <InputText id="username" v-model="text" />
       <label for="username">Username</label>
     </FloatLabel>
 
+    <Button label="Submit" icon="pi pi-check" /> -->
+
     <Dropdown
-      v-model="selectedCountry"
-      :options="countries"
+      v-model="selectedAirport"
+      :options="airports"
       filter
       optionLabel="name"
-      placeholder="Select a Country"
+      placeholder="Select an Airport"
       class="w-full md:w-14rem"
     >
       <template #value="slotProps">
@@ -95,7 +98,7 @@ const countries = ref([
     </Dropdown>
   </div>
 
-  <div class="container">
+  <!-- <div class="container">
     <DataTable :value="airports">
       <Column field="iataCode" header="Code"></Column>
       <Column field="name" header="Name"></Column>
@@ -103,16 +106,17 @@ const countries = ref([
       <Column field="quantity" header="Quantity"></Column>
     </DataTable>
 
-    <!-- <span class="p-float-label">
-      <InputText id="txt" v-model="text" />
-      <label for="txt">Text</label>
-    </span> -->
-  </div>
+  </div> -->
 
   <RouterView />
 </template>
 
 <style scoped>
+/* .container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
 .container {
   display: flex;
   align-items: center;

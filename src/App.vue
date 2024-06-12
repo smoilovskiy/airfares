@@ -15,21 +15,43 @@ const dataService = new DataService()
 //let response: any = []
 
 onMounted(async () => {
-  const instance = axios.create({
-    baseURL: 'https://www.ryanair.com/api'
-  })
-  const res: any = await instance
-    .get('/views/locate/3/airports/en/active')
-    .then((response) => (airports = response.data))
-    .then(() => console.log('Airports:', airports))
-
+  // const instance = axios.create({
+  //   baseURL: 'https://www.ryanair.com/api'
+  // })
+  // const res: any = await instance
+  //   .get('/views/locate/3/airports/en/active')
+  //   .then((response) => (airports = response.data))
+  //   .then(() => console.log('Airports:', airports))
   // dataService
   //   .getActiveAirports()
   //   .then((data) => (airports.value = data))
   //   .then(() => console.log('Airports:', airports))
 })
 
-let airports = ref()
+let airports = ref([]) // <---- use const to make the error impossible
+
+const getData = async () => {
+  // const instance = axios.create({
+  //   baseURL: 'https://www.ryanair.com/api'
+  // })
+  // const res: any = await instance
+  //   .get('/views/locate/3/airports/en/active')
+  //   .then((response) => (airports = response.data))
+  //   .then(() => console.log('Airports:', airports))
+
+  fetch('https://www.ryanair.com/api/views/locate/3/airports/en/active')
+    .then((res) => res.json())
+    .then((response) => {
+      airports.value = response // <---- assign to the ref's value
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+}
+
+getData()
+console.log('airports', airports)
+//let airports = ref()
 
 const text = ref()
 //const value = ref(null);
@@ -54,7 +76,10 @@ const allAirports = airports
 </script>
 
 <template>
-  <div class="container">
+  <div v-if="!airports">Loading...</div>
+  <!-- <div v-else>{{ airports }}</div> -->
+
+  <div v-else class="container">
     <!-- <FloatLabel>
       <InputText id="username" v-model="text" />
       <label for="username">Username</label>

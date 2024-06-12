@@ -53,6 +53,10 @@ getData()
 console.log('airports', airports)
 //let airports = ref()
 
+function airportSelectHandler() {
+  console.log('>>>>', selectedAirport)
+}
+
 const text = ref()
 //const value = ref(null);
 
@@ -90,6 +94,7 @@ const allAirports = airports
     <Dropdown
       v-model="selectedAirport"
       :options="airports"
+      :change="airportSelectHandler()"
       filter
       optionLabel="name"
       placeholder="Select an Airport"

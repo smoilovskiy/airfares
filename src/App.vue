@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import axios from 'axios'
 
 import DataService from './service/TempData'
@@ -10,6 +10,9 @@ import Column from 'primevue/column'
 import Dropdown from 'primevue/dropdown'
 import InputText from 'primevue/inputtext'
 import FloatLabel from 'primevue/floatlabel'
+
+//import { isProxy, toRaw } from 'vue'
+import { reactive, toRaw } from 'vue'
 
 const dataService = new DataService()
 //let response: any = []
@@ -53,8 +56,10 @@ getData()
 console.log('airports', airports)
 //let airports = ref()
 
-function airportSelectHandler() {
-  console.log('>>>>', selectedAirport)
+function airportSelectHandler(event: any) {
+  console.log('>>>>', event.value)
+  console.log({ ...event.value })
+  //console.log(JSON.parse(JSON.stringify(event.value)))
 }
 
 const text = ref()
@@ -94,11 +99,11 @@ const allAirports = airports
     <Dropdown
       v-model="selectedAirport"
       :options="airports"
-      :change="airportSelectHandler()"
+      @change="airportSelectHandler($event)"
       filter
       optionLabel="name"
       placeholder="Select an Airport"
-      class="w-full md:w-14rem"
+      style="width: 200px"
     >
       <template #value="slotProps">
         <div v-if="slotProps.value" class="flex align-items-center">
@@ -129,6 +134,10 @@ const allAirports = airports
   </div>
 
   <!-- <div class="container">
+<Button v-if="selectedAirport" label="Search" icon="pi pi-check" />
+
+
+
     <DataTable :value="airports">
       <Column field="iataCode" header="Code"></Column>
       <Column field="name" header="Name"></Column>
@@ -142,11 +151,6 @@ const allAirports = airports
 </template>
 
 <style scoped>
-/* .container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} */
 .container {
   display: flex;
   align-items: center;

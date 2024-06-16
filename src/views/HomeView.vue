@@ -56,6 +56,7 @@ console.log('airports', airports)
 function airportSelectHandler(event: any) {
   console.log('>>>>', event.value)
   console.log({ ...event.value })
+
   //console.log(JSON.parse(JSON.stringify(event.value)))
 }
 

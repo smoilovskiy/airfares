@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
-import RoundTripView from '@/views/RoundTripView.vue'
+import RoundTripFaresView from '@/views/RoundTripFaresView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,7 +13,7 @@ const router = createRouter({
     {
       path: '/roundtrip',
       name: 'roundtrip',
-      component: RoundTripView
+      component: RoundTripFaresView
     },
     {
       path: '/about',
